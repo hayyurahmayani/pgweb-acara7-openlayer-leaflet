@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Leaflet</title>
+    <!-- Style Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Style Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="alert alert-success text-center" role="alert">
+        <h3>Sedikit Informasi Kabupaten tentang Gunungkidul</h3>
+    </div>
+    <div id="map" style="height: 600px; margin-top: 20px; margin-bottom: 20px; margin-left: 5px; margin-right: 15px;">
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // tampilan awal peta
+        var map = L.map("map").setView([-7.9668418, 110.5985915], 12);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 30,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        //tampilan marker
+        var coordinates = [
+            { lat: -8.186652, lon: 110.691392, info: 'Pariwisata: Bukit Pengilon' },
+            { lat: -8.146508, lon: 110.605501, info: 'Pariwisata: Pantai Ngandong' },
+            { lat: -7.943148, lon: 110.489668, info: 'Pariwisata: Air Terjun Sri Gethuk' },
+            { lat: -7.840829, lon: 110.54353, info: 'Pariwisata: Gunung Nglanggeran' },
+            { lat: -7.929403, lon: 110.648883, info: 'Pariwisata: Goa Pindul' },
+            { lat: -7.96195, lon: 110.603925, info: 'Kesehatan: RSUD Wonosari' },
+            { lat: -7.92243, lon: 110.56149, info: 'Kesehatan: RS Nur Rohmah' },
+            { lat: -7.94055, lon: 110.59155, info: 'Kesehatan: RS PKU Muhammadiyah' },
+            { lat: -7.9561, lon: 110.6584, info: 'Kesehatan: RS Panti Rahayu' }
+        ];
+        for (var i = 0; i < coordinates.length; i++) {
+            var marker = L.marker([coordinates[i].lat, coordinates[i].lon]).addTo(map);
+            marker.bindPopup(coordinates[i].info);
+        }
+
+        // radius Lingkaran
+        var circleCoordinates = [
+            [-7.96195, 110.603925],
+            [-7.92243, 110.56149],
+            [-7.94055, 110.59155],
+            [-7.9561, 110.6584]
+        ];
+        var circleRadiuses = [5000, 5000, 5000, 5000];
+        var circleColors = ['green', 'yellow', 'yellow', 'yellow'];
+        for (var i = 0; i < circleCoordinates.length; i++) {
+            var circle = L.circle(circleCoordinates[i], {
+                color: circleColors[i],
+                fillColor: circleColors[i],
+                fillOpacity: 0.2,
+                radius: circleRadiuses[i]
+            }).addTo(map);
+        }
+
+        // Polygon
+        var polygons = [
+            {
+                coordinates: [
+                [-7.914765, 110.555986],
+                [-7.916805, 110.556827],
+                [-7.918495, 110.572908],
+                [-7.916933, 110.573166],
+                [-7.916338, 110.568539],
+                [-7.914988, 110.568657],
+                [-7.91452, 110.565716],
+                [-7.915976, 110.565544]
+                ],
+                color: 'red',
+                fillColor: 'red',
+                fillOpacity: 0.5,
+                popupContent: 'Lapangan Udara Gading'
+            }
+        ];
+
+        polygons.forEach(function (polygonData) {
+            var polygon = L.polygon(polygonData.coordinates, {
+                color: polygonData.color,
+                fillColor: polygonData.fillColor,
+                fillOpacity: polygonData.fillOpacity
+            }).addTo(map);
+
+            // info
+            polygon.bindPopup(polygonData.popupContent);
+        });
+    </script>
+</body>
+
+</html>
